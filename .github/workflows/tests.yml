@@ -12,14 +12,19 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: secret
     steps:
-      - uses: actions/checkout@v6
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       - name: Install Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1.338.0
         with:
           ruby-version: 3.3.3
           bundler-cache: true
       - name: Install Elasticsearch
-        uses: ankane/setup-elasticsearch@v1
+        uses: ankane/setup-elasticsearch@31ef32c3c8f64eb06167398f88ca6582fd2aad6d # v1
         with:
           elasticsearch-version: 9
       - name: Verify Elasticsearch connection and create index
